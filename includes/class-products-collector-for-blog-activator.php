@@ -23,14 +23,35 @@
 class Products_Collector_For_Blog_Activator {
 
 	/**
-	 * Short Description. (use period)
+	 * Create table for products.
 	 *
 	 * Long Description.
 	 *
 	 * @since    1.0.0
 	 */
 	public static function activate() {
+		global $wpdb;
 
+        $table_name = $wpdb->prefix . 'pcfb_products_collector';
+
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE IF NOT EXISTS $table_name (
+			id mediumint(9) NOT NULL AUTO_INCREMENT,
+			time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+			title tinytext NOT NULL,
+			image_url varchar(55) DEFAULT '' NOT NULL,
+			full_price decimal(19, 4) DEFAULT 0 NOT NULL,
+			promo_price decimal(19, 4) DEFAULT 0 NOT NULL,
+			url varchar(55) DEFAULT '' NOT NULL,
+			update_time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+			PRIMARY KEY  (id)
+		  ) $charset_collate;";
+		  
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		dbDelta( $sql );
+
+		add_option( 'pcfb_db_version', '1.0' );
 	}
 
 }

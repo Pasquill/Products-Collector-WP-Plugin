@@ -23,14 +23,21 @@
 class Products_Collector_For_Blog_Deactivator {
 
 	/**
-	 * Short Description. (use period)
+	 * Drop table for products.
 	 *
 	 * Long Description.
 	 *
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
+		global $wpdb;
+		
+		$table_name = $wpdb->prefix . 'pcfb_products_collector';
 
+		$sql = "DROP TABLE IF EXISTS $table_name";
+		$wpdb->query($sql);
+
+		delete_option( 'pcfb_db_version' );
 	}
 
 }
