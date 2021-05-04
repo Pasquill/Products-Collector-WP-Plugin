@@ -12,5 +12,3 @@
  * @subpackage Products_Collector_For_Blog/public/partials
  */
 ?>
-
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->

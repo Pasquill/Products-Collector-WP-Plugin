@@ -25,8 +25,6 @@ class Products_Collector_For_Blog_Activator {
 	/**
 	 * Create table for products.
 	 *
-	 * Long Description.
-	 *
 	 * @since    1.0.0
 	 */
 	public static function activate() {
@@ -38,12 +36,12 @@ class Products_Collector_For_Blog_Activator {
 
 		$sql = "CREATE TABLE IF NOT EXISTS $table_name (
 			id mediumint(9) NOT NULL AUTO_INCREMENT,
-			time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+			date_modified datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
 			title tinytext NOT NULL,
-			image_url varchar(55) DEFAULT '' NOT NULL,
-			full_price decimal(19, 4) DEFAULT 0 NOT NULL,
-			promo_price decimal(19, 4) DEFAULT 0 NOT NULL,
-			url varchar(55) DEFAULT '' NOT NULL,
+			image_url varchar(255) DEFAULT NULL,
+			price_html longtext DEFAULT NULL,
+			on_sale boolean DEFAULT 0,
+			permalink varchar(255) DEFAULT '' NOT NULL,
 			update_time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
 			PRIMARY KEY  (id)
 		  ) $charset_collate;";

@@ -1,13 +1,6 @@
 <?php
 
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
  * @link              https://github.com/Pasquill
  * @since             1.0.0
  * @package           Products_Collector_For_Blog
@@ -15,7 +8,7 @@
  * @wordpress-plugin
  * Plugin Name:       Products Collector for Blog
  * Plugin URI:        https://github.com/Pasquill/products-collector-for-blog
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Connect your blog with your woocommerce-driven shop via woocommerce rest api.
  * Version:           1.0.0
  * Author:            Pasquill
  * Author URI:        https://github.com/Pasquill
@@ -25,13 +18,12 @@
  * Domain Path:       /languages
  */
 
-// If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
 /**
- * Currently plugin version.
+ * Current plugin version.
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */

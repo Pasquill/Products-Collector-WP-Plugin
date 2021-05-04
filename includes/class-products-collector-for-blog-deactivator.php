@@ -24,8 +24,7 @@ class Products_Collector_For_Blog_Deactivator {
 
 	/**
 	 * Drop table for products.
-	 *
-	 * Long Description.
+	 * Delete plugin options.
 	 *
 	 * @since    1.0.0
 	 */
@@ -38,6 +37,7 @@ class Products_Collector_For_Blog_Deactivator {
 		$wpdb->query($sql);
 
 		delete_option( 'pcfb_db_version' );
+		delete_option( 'products-collector-for-blog' );
 	}
 
 }

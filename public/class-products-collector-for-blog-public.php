@@ -61,18 +61,6 @@ class Products_Collector_For_Blog_Public {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Products_Collector_For_Blog_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Products_Collector_For_Blog_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/products-collector-for-blog-public.css', array(), $this->version, 'all' );
 
 	}
@@ -84,19 +72,80 @@ class Products_Collector_For_Blog_Public {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Products_Collector_For_Blog_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Products_Collector_For_Blog_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/products-collector-for-blog-public.js', array( 'jquery' ), $this->version, false );
+
+	}
+
+	/**
+	 * Register the Shortcodes.
+	 *
+	 * @since    1.0.0
+	 */
+	public function register_shortcodes() {
+
+		add_shortcode( 'pcfb_product', array( $this, 'get_product_for_shortcode') );
+
+	}
+
+	/**
+	 * Get Product for the shortcode.
+	 *
+	 * @since    1.0.0
+	 */
+	public function get_product_for_shortcode( $atts = array() ) {
+		global $wpdb;
+
+		$args = array();
+
+		foreach ($atts as $key => $value) {
+
+			switch ($key) {
+				case 'id':
+					$args[] = 'id = ' . $value;
+					break;
+				
+				// case 'category': // tbd
+				// 	$args[] = 'category = ' . $value;
+				// 	break;
+
+				default:
+					break;
+			}
+
+		}
+
+		if( count( $args ) != 0 ) {
+			$condition = 'WHERE (' . implode( ' AND ', $args ) . ')';
+		} else {
+			$condition = 'ORDER BY RAND()';
+		}
+
+		$product = $wpdb->get_results("
+			SELECT title, image_url, price_html, on_sale, permalink FROM {$wpdb->prefix}pcfb_products_collector
+			{$condition}
+			LIMIT 1
+		");
+
+		$html_sale_badge = ( $product[0]->on_sale ) ? '<span class="onsale">Sale!</span>' : '';
+		$html_image = file_get_contents( plugin_dir_path( __FILE__ ) . 'assets/image-not-found.svg', false ); // tbd
+		$html_price = html_entity_decode( $product[0]->price_html );
+
+		$result = <<<HTML
+		<div class="product sale-{$product[0]->on_sale}">
+			<a href="{$product[0]->permalink}" class="product__link">
+				{$html_sale_badge}
+				<span class="product__image">
+					{$html_image}
+				</span>
+				<h2 class="product__title">{$product[0]->title}</h2>
+				<span class="product__price">
+					{$html_price}
+				</span>
+			</a>
+		</div>
+		HTML;
+
+		return $result;
 
 	}
 
